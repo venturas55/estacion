@@ -1,0 +1,177 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: wheat;
+}
+
+#miApp {
+    margin: 15px;
+}
+
+header {
+    background: url('http://www.autodatz.com/wp-content/uploads/2017/05/Old-Car-Wallpapers-Hd-36-with-Old-Car-Wallpapers-Hd.jpg');
+    text-align: center;
+    width: 100%;
+    height: auto;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 0 85% 85% / 30%;
+}
+
+header .overlay {
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+    color: #FFF;
+    text-shadow: 1px 1px 1px #333;
+    background-image: linear-gradient( 135deg, #9f05ff69 10%, #fd5e086b 100%);
+}
+
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 80px;
+    margin-bottom: 30px;
+}
+
+h3,
+p {
+    font-family: 'Open Sans', sans-serif;
+    margin-bottom: 30px;
+}
+
+button {
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    color: #333;
+    background: #fff;
+    margin-top: 50px;
+    box-shadow: 0 3px 20px 0 #0000003b;
+}
+
+#myGraph {
+    border-radius: 15px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.column {
+    flex-flow: column wrap;
+}
+
+.row {
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.cajita {
+    text-align: center;
+    border: 1px solid pink;
+    border-radius: 5px;
+    height: 30px;
+}
+
+.uno {
+    background: #ffff7aa9;
+}
+
+.dos {
+    background: #a7ffb6a2;
+}
+
+.tres {
+    background: #a6f2f9;
+}
+
+.cuatro {
+    background: #f9cfc39c;
+}
+
+.cinco {
+    background: #f58aec93;
+}
+
+.imagen img {
+    height: 300px;
+    border-radius: 25px;
+    border: 1px solid pink;
+}
+
+.arrow {
+    height: 20px;
+    width: 20px;
+}
+
+.prevision {
+    width: 100%;
+    overflow-x: scroll !important;
+}
+
+.contenido {
+    width: 100%;
+}
+
+.actual {
+    border: 3px solid rgb(241, 109, 131);
+    border-radius: 20px;
+}
+
+.historico {
+    border: 3px solid rgb(241, 109, 131);
+    border-radius: 20px;
+}
+
+.prediccion {
+    border: 3px solid rgb(241, 109, 131);
+    border-radius: 30px;
+}
+
+
+/* Curso CSS estilos tablas*/
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    margin: 45px;
+    width: 480px;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+th {
+    font-size: 13px;
+    font-weight: normal;
+    padding: 8px;
+    background: #b9c9fe;
+    border-top: 4px solid #aabcfe;
+    border-bottom: 1px solid #fff;
+    color: #039;
+}
+
+td {
+    padding: 8px;
+    background: #e8edff;
+    border-bottom: 1px solid #fff;
+    color: #669;
+    border-top: 1px solid transparent;
+}
+
+tr:hover td {
+    background: #d0dafd;
+    color: #339;
+}
