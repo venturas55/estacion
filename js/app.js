@@ -21,12 +21,12 @@ var app = new Vue({
     },
     computed: {},
     methods: {
-        consulta: function() {
+        consulta: function () {
             console.log("consulta");
             axios.post('action.php', {
-                    action: 'fetchall'
-                })
-                .then(function(response) {
+                action: 'fetchall'
+            })
+                .then(function (response) {
                     app.listado = response.data;
                     //Borramos arrays
                     app.fechas = [];
@@ -43,11 +43,18 @@ var app = new Vue({
                     app.actual.push(app.listado[0][0]);
                     app.actual.push(parseFloat(app.listado[0][1]).toFixed(2));
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.log(error);
                 });
         },
-        mostrar: function() {
+        mostrar: function () {
+            //girar las flechas de las tablas
+            for (i = 0; i < 48; i++) {
+                document.getElementById("arrowb" + i).style.transform = 'rotate(' + this.forecast1.hourly[i].wind_deg + 'deg)';
+
+            }
+
+            //fin de girar las flechas
             console.log("mostrar");
             this.consulta();
 
@@ -152,29 +159,29 @@ var app = new Vue({
                         range: [null, 40]
                     },
                     steps: [{
-                            range: [0, 10],
-                            color: "#f58aec"
-                        },
-                        {
-                            range: [10, 14],
-                            color: "#fffe7a"
-                        },
-                        {
-                            range: [14, 18],
-                            color: "#a7ffb5"
-                        },
-                        {
-                            range: [18, 24],
-                            color: "#a6f2f9"
-                        },
-                        {
-                            range: [24, 33],
-                            color: "#f9cfc3"
-                        },
-                        {
-                            range: [33, 40],
-                            color: "#f58aec"
-                        }
+                        range: [0, 10],
+                        color: "#f58aec"
+                    },
+                    {
+                        range: [10, 14],
+                        color: "#fffe7a"
+                    },
+                    {
+                        range: [14, 18],
+                        color: "#a7ffb5"
+                    },
+                    {
+                        range: [18, 24],
+                        color: "#a6f2f9"
+                    },
+                    {
+                        range: [24, 33],
+                        color: "#f9cfc3"
+                    },
+                    {
+                        range: [33, 40],
+                        color: "#f58aec"
+                    }
                     ],
                     /*         threshold: {
                                 line: { color: "red", width: 4 },
@@ -235,11 +242,11 @@ var app = new Vue({
 
 
         },
-        recargar: function() {
+        recargar: function () {
             //this.rep = setInterval(this.mostrar, 5000);
             // this.ret = setTimeout(this.mostrar(), 1000);
         },
-        async prevision() {
+        peticion: async function () {
             switch (this.localidad) {
                 case 'alboraya':
                     this.longitud = -0.33802;
@@ -254,78 +261,40 @@ var app = new Vue({
                     this.latitud = 39.166672;
                     break;
             }
-            //39.224810 -0.244524
+            var apiURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitud + "&lon=" + this.longitud + "&exclude=minutely&appid=40c80c4ba17021c74a82c737871c6673"
             try {
-                let response = await fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitud + "&lon=" + this.longitud + "&exclude=minutely&appid=40c80c4ba17021c74a82c737871c6673");
-                this.forecast1 = await response.json();;
+                let response = await fetch(apiURL);
+                this.forecast1 = await response.json();
             } catch (error) {
                 console.log(error);
             }
-            console.log(this.forecast1);
-            var tabla = document.getElementById("previ2");
+            await this.prevision();
+            await this.mostrar();
+        },
+        prevision: function () {
+            console.log(this.forecast1.hourly);
             var meses = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            for (i = 1; i <= 48; i++) {
-                var unixtime = this.forecast1.hourly[i].dt * 1000;
-                const dateObject = new Date(unixtime);
-                var hora = dateObject.getHours(); //hora
-                var fecha = dateObject.getDate(); //dia
-                var mes = meses[dateObject.getMonth()];
+            var texto = texto + "<tr><th> Fecha</th>" + this.forecast1.hourly.map(item => ("<td> " + new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] + "</td>")).join('') + "</tr>";
+            var texto = texto + "<tr><th> Vel</th>" + this.forecast1.hourly.map(item => ("<td> " + (item.wind_gust * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
+            this.nudosPrev = this.forecast1.hourly.map(function (item) { return item.wind_speed * 1.94384.toFixed(1) });
+            this.rachasPrev = this.forecast1.hourly.map(function (item) { return item.wind_gust * 1.94384.toFixed(1) });
+            this.fechasPrev = this.forecast1.hourly.map(function (item) { return new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] });
+            var texto = texto + "<tr><th> Racha</th>" + this.forecast1.hourly.map(item => ("<td>" + (item.wind_speed * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
+            var texto = texto + "<tr><th> Dir</th>" + this.forecast1.hourly.map((item, i) => ('<td><img src="./img/arrow.png" class="arrow" id="arrowb' + i + '" /></td>')).join('') + "</tr>";
+            var texto = texto + "<tr><th> Nubes</th>" + this.forecast1.hourly.map(item => ("<td>" + (item.clouds + "%</td>"))).join('') + "</tr>";
+            var texto = texto + "<tr><th> Temp</th>" + this.forecast1.hourly.map(item => ("<td>" + (item.temp - 273.15).toFixed(1) + "</td>")).join('') + "</tr>";
+            var texto = texto + "<tr><th> Icon</th>" + this.forecast1.hourly.map(item => ("<td><img src='http://api.openweathermap.org/img/w/" + item.weather[0].icon + ".png' /></td>")).join('') + "</tr>";
+            var tabla = document.getElementById("previ2");
 
-                this.fechasPrev[i - 1] = hora + "h" + "\n" + fecha + mes;
-                //const humanDateFormat = dateObject.toLocaleString()
-                //humanDateFormat = fecha.substring(11, 13);
-                tabla.rows[0].cells[i].innerHTML = "";
-                tabla.rows[0].cells[i].append(this.fechasPrev[i - 1]); //Cojo de la previ los TR, me quedo con el primero(0), cojo los TD, me quedo con el i
-                //$("#previ2").find("tr").eq(0).find("td").eq(i).prepend(diaSemana(fecha + ""));
-                this.nudosPrev[i - 1] = this.forecast1.hourly[i].wind_speed * 1.94384; //nudos
-                this.rachasPrev[i - 1] = this.forecast1.hourly[i].wind_gust * 1.94384; //nudos
-                tabla.rows[1].cells[i].innerHTML = "";
-                tabla.rows[2].cells[i].innerHTML = "";
-                tabla.rows[1].cells[i].append(this.rachasPrev[i - 1].toFixed(1)); //Cojo de la previ los TR, me quedo con el segundo(1), cojo los TD, me quedo con el i
-                tabla.rows[2].cells[i].append(this.nudosPrev[i - 1].toFixed(1)); //Cojo de la previ los TR, me quedo con el segundo(1), cojo los TD, me quedo con el i
-
-                var direccion = this.forecast1.hourly[i].wind_deg;
-
-                var DOM_img = document.createElement("img");
-                DOM_img.src = "./img/arrow.png";
-                DOM_img.setAttribute('class', 'arrow');
-                DOM_img.id = 'arrowb' + i;
-                if (document.contains(document.getElementById("arrowb" + i))) {
-                    var hijo = document.getElementById("arrowb" + i)
-                    tabla.rows[3].cells[i].removeChild(hijo);
-                }
-                tabla.rows[3].cells[i].appendChild(DOM_img);
-                document.getElementById("arrowb" + i).style.transform = 'rotate(' + direccion + 'deg)';
-
-
-                // tabla.rows[3].cells[i].appendChild('<img src="./img/arrow.png" alt="" class="arrow" id="arrowb' + i + '">'); //Cojo de la previ los TR, me quedo con el tercero(")"), cojo los TD, me quedo con el i
-                // tabla.rows[3].cells[i].append(direccion);
-                var nubes = this.forecast1.hourly[i].clouds;
-                tabla.rows[4].cells[i].innerHTML = "";
-                tabla.rows[4].cells[i].append(nubes + "%");
-                var temp = this.forecast1.hourly[i].temp - 273.15;
-                tabla.rows[5].cells[i].innerHTML = "";
-                tabla.rows[5].cells[i].append(temp.toFixed(1));
-
-                if (document.contains(tabla.rows[6].cells[i].getElementsByTagName('img')[0])) {
-                    var hijo = tabla.rows[6].cells[i].getElementsByTagName('img')[0]
-                    tabla.rows[6].cells[i].removeChild(hijo);
-                }
-
-                var DOM_img = document.createElement("img");
-                var source = "http://api.openweathermap.org/img/w/" + this.forecast1.hourly[i].weather[0].icon + ".png";
-                DOM_img.src = source;
-                tabla.rows[6].cells[i].appendChild(DOM_img);
-            }
-            this.mostrar();
+            tabla.innerHTML =  texto;
         }
 
     },
-    mounted: function() {
+    mounted: function () {
 
-        this.prevision();
-        this.mostrar();
-        this.int = setTimeout(this.mostrar, 500);
+        this.peticion();
+        //this.mostrar();
+        //this.int = setTimeout(this.mostrar, 500);
         //this.rep = setInterval(this.mostrar, 300000);
     }
 

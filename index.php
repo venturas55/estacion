@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-	<title>Estacion Faro Cullera</title>
+	<title>Estacion Faro Cullera 2</title>
 	<meta charset="UTF-8">
 	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
@@ -14,15 +14,16 @@
 	<div id="miApp">
 		<header>
 			<div class="overlay">
-				<h1>Estación Faro de Cullera</h1>
+				<h1>Estación Faro de Cullera 2</h1>
 				<h2>Ubicada en el faro de Cullera. Para los enfermos del Kite.</h2>
 				<h3>Ultima actualización: {{actual[0]}} </h3>
-				<button v-on:click="mostrar()" id="btnActualizar"> Actualizar</button>
+				<button v-on:click="peticion()" id="btnActualizar"> Actualizar</button>
+				<button v-on:click="mostrar()"> mostrar</button>
 			</div>
 		</header>
-		<div class="historico"> 
+		<div class="historico">
 			<div class="flex row actual">
-				<div  id='myGauge'>
+				<div id='myGauge'>
 				</div>
 				<div>
 					<div class="cajita uno">
@@ -42,389 +43,38 @@
 					</div>
 				</div>
 				<div class="imagen" v-if="actual[1]">
-					<a v-if="actual[1]>33"  href="./img/netflix.png" target="_blank" ><img src="./img/netflix.png" alt="" > </a>
-					<a v-else-if="actual[1]>24"  href="./img/megaloop.png" target="_blank"><img src="./img/megaloop.png" alt="" ></a>
-					<a v-else-if="actual[1]>18" href="./img/twintip.jpg" target="_blank" ><img  src="./img/twintip.jpg" alt=""></a>
-					<a v-else-if="actual[1]>14" href="./img/pincho.png" target="_blank" ><img  src="./img/pincho.png" alt=""></a>
-					<a v-else-if="actual[1]>10" href="./img/foil.png" target="_blank" ><img  src="./img/foil.png" alt="" ></a>
-					<a v-else href="./img/beer.png" target="_blank" ><img src="./img/beer.png" alt=""></a>
+					<a v-if="actual[1]>33" href="./img/netflix.png" target="_blank"><img src="./img/netflix.png" alt=""> </a>
+					<a v-else-if="actual[1]>24" href="./img/megaloop.png" target="_blank"><img src="./img/megaloop.png" alt=""></a>
+					<a v-else-if="actual[1]>18" href="./img/twintip.jpg" target="_blank"><img src="./img/twintip.jpg" alt=""></a>
+					<a v-else-if="actual[1]>14" href="./img/pincho.png" target="_blank"><img src="./img/pincho.png" alt=""></a>
+					<a v-else-if="actual[1]>10" href="./img/foil.png" target="_blank"><img src="./img/foil.png" alt=""></a>
+					<a v-else href="./img/beer.png" target="_blank"><img src="./img/beer.png" alt=""></a>
 				</div>
-			
+
 			</div>
-				<div  class="grafico" id='myGraph'>
-				</div>
+			<div class="grafico" id='myGraph'>
 			</div>
-		
+		</div>
+
 
 		<div class="flex column prediccion">
-			<select name="select" v-model="localidad" @change="prevision">
+			<select name="select" v-model="localidad" @change="peticion">
 				<option value="1">Localidad</option>
 				<option value="alboraya">Alboraya</option>
 				<option value="saler">Saler</option>
 				<option value="cullera">Cullera</option>
 			</select>
+
 			<div class="contenido">
-			<div class="grafico" id='myGraph2'>
+				<div class="grafico" id='myGraph2'>
+				</div>
+				<table class="prevision" id="previ2">
+					<caption> Prevision </caption>
+
+				</table>
 			</div>
-			<table class="prevision" id="previ2">
-				<caption> Prevision </caption>
-				<tr>
-					<th>Hora</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<th>Racha (knots)</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
 
-				<tr>
-					<th>Media (knots)</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<th>Direccion</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<th>Nubosidad</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<th>Temperatura</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
 
-				<tr>
-					<th>Icon</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-
-			</table>
-</div>
-
-	
 		</div>
 
 	</div>

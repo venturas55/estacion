@@ -1,12 +1,10 @@
 <?php
-
-  
   function conectaDb()
   {
-    $host = "localhost"; /* Host name 141.94.20.248*/
+    $host = "localhost"; /* Host name 152.228.133.198 */
     $user = "venturas"; /* User */
-    $password = "Administrador1"; /* Password */
-    $dbname = "anemometro"; /* Database name */
+    $password = "weR65hS"; /* Password */
+    $dbname = "estacion"; /* Database name */
       //uso de las excepciones en php try y catch
       try {
         $dsn = "mysql:host=".$host.";dbname=".$dbname;

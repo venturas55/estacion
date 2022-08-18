@@ -8,6 +8,10 @@ body {
     background-color: wheat;
 }
 
+#miApp {
+    margin: 15px;
+}
+
 header {
     background: url('http://www.autodatz.com/wp-content/uploads/2017/05/Old-Car-Wallpapers-Hd-36-with-Old-Car-Wallpapers-Hd.jpg');
     text-align: center;
@@ -59,6 +63,7 @@ button {
 .flex {
     display: flex;
     align-items: center;
+    text-align: center;
 }
 
 .column {
@@ -78,11 +83,11 @@ button {
 }
 
 .uno {
-    background: #fffe7a;
+    background: #ffff7aa9;
 }
 
 .dos {
-    background: #a7ffb5;
+    background: #a7ffb6a2;
 }
 
 .tres {
@@ -90,11 +95,11 @@ button {
 }
 
 .cuatro {
-    background: #f9cfc3;
+    background: #f9cfc39c;
 }
 
 .cinco {
-    background: #f58aec;
+    background: #f58aec93;
 }
 
 .imagen img {
@@ -109,7 +114,27 @@ button {
 }
 
 .prevision {
-    overflow: auto !important;
+    width: 100%;
+    overflow-x: scroll !important;
+}
+
+.contenido {
+    width: 100%;
+}
+
+.actual {
+    border: 3px solid rgb(241, 109, 131);
+    border-radius: 20px;
+}
+
+.historico {
+    border: 3px solid rgb(241, 109, 131);
+    border-radius: 20px;
+}
+
+.prediccion {
+    border: 3px solid rgb(241, 109, 131);
+    border-radius: 30px;
 }
 
 

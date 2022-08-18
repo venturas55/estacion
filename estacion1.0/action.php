@@ -9,7 +9,7 @@ $datosRecibidos = json_decode(file_get_contents("php://input"));
 $datos = array();
 
 if($datosRecibidos->action == 'fetchall'){
-    $sql = "select fecha,nudos from viento order by fecha desc limit 500";
+    $sql = "select fecha,nudos,minima,maxima from viento order by fecha desc limit 500";
     $result = $db->prepare($sql);
     $result->execute(); 
 
