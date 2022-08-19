@@ -65,8 +65,8 @@
 				<option value="cullera">Cullera</option>
 			</select>
 			<div class="tab">
-				<button class="tablinks" v-on:click="openDia(event, 'contenidoHoy')">Hoy</button>
-				<button class="tablinks" v-on:click="openDia(event, 'contenidoManana')">Mañana</button>
+				<button class="tablinks button" v-on:click="openDia('contenidoHoy',$event)">Hoy</button>
+				<button class="tablinks button" v-on:click="openDia('contenidoManana',$event)">Mañana</button>
 			</div>
 
 			<div class="contenido tabcontent" id="contenidoHoy">

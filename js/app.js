@@ -13,9 +13,9 @@ var app = new Vue({
         forecast1: "",
         forecastToday: "",
         forecastTomorrow: "",
-        fechasPrevToday: [],
-        nudosPrevToday: [],
-        rachasPrevToday: [],
+        PrevToday: [],
+        PrevToday: [],
+        PrevToday: [],
         fechasPrevTomorrow: [],
         nudosPrevTomorrow: [],
         rachasPrevTomorrow: [],
@@ -212,7 +212,7 @@ var app = new Vue({
                 type: "scatter",
                 mode: "lines",
                 name: 'Velocidad',
-                x: this.fechasPrevToday,
+                x: this.fechaPrevToday,
                 y: this.nudosPrevToday,
                 line: {
                     color: '#17BECF',
@@ -245,7 +245,7 @@ var app = new Vue({
                 type: "scatter",
                 mode: "lines",
                 name: 'Velocidad',
-                x: this.fechasPrevTomorrow,
+                x: this.fechaPrevTomorrow,
                 y: this.nudosPrevTomorrow,
                 line: {
                     color: '#17BECF',
@@ -254,7 +254,7 @@ var app = new Vue({
             }
             var dataManana = [tracePreviManana];
             var layoutPreviManana = {
-                title: 'Predicción para ' + this.localidad+ ' mañana',
+                title: 'Predicción para ' + this.localidad + ' mañana',
                 yaxis: {
                     range: [0, 25],
                     title: {
@@ -307,15 +307,30 @@ var app = new Vue({
             var meses = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             this.forecastToday = this.forecast1.hourly.slice(0, 24);
             this.forecastTomorrow = this.forecast1.hourly.slice(24, 49);
-            console.log(this.forecastToday);
-            console.log(this.forecastTomorrow);
             this.nudosPrevToday = this.forecastToday.map(function (item) { return item.wind_speed * 1.94384.toFixed(1) });
             this.rachasPrevToday = this.forecastToday.map(function (item) { return item.wind_gust * 1.94384.toFixed(1) });
-            this.fechasPrevToday = this.forecastToday.map(function (item) { return new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] });
+            this.fechaPrevToday = this.forecastToday.map(function (item) { return new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] });
             this.nudosPrevTomorrow = this.forecastTomorrow.map(function (item) { return item.wind_speed * 1.94384.toFixed(1) });
             this.rachasPrevTomorrow = this.forecastTomorrow.map(function (item) { return item.wind_gust * 1.94384.toFixed(1) });
-            this.fechasPrevTomorrow = this.forecastTomorrow.map(function (item) { return new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] });
+            this.fechaPrevTomorrow = this.forecastTomorrow.map(function (item) { return new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] });
+   
+   
+            /*          this.PrevToday = this.forecastToday.map(function (item) {
+                return {
+                    "nudos": item.wind_speed * 1.94384.toFixed(1),
+                    "rachas": item.wind_gust * 1.94384.toFixed(1),
+                    "fecha": new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()]
+                }
+            }); 
 
+            this.PrevTomorrow = this.forecastTomorrow.map(function (item) {
+                return {
+                    "nudos": item.wind_speed * 1.94384.toFixed(1),
+                    "rachas": item.wind_gust * 1.94384.toFixed(1),
+                    "fecha": new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()]
+                }
+            });*/
+    
             var textoHoy = "<tr><th> Fecha</th>" + this.forecastToday.map(item => ("<td> " + new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] + "</td>")).join('') + "</tr>";
             textoHoy += "<tr><th> Vel</th>" + this.forecastToday.map(item => ("<td> " + (item.wind_gust * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
             textoHoy += "<tr><th> Racha</th>" + this.forecastToday.map(item => ("<td>" + (item.wind_speed * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
@@ -338,31 +353,31 @@ var app = new Vue({
             tablaToday.innerHTML = textoHoy;
             tablaTomorrow.innerHTML = textoManana;
         },
-        openDia: function (evt, dia) {
+        openDia: function (dia, event) {
             // Declare all variables
             var i, tabcontent, tablinks;
-    
+
             // Get all elements with class="tabcontent" and hide them
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-    
+
             // Get all elements with class="tablinks" and remove the class "active"
             tablinks = document.getElementsByClassName("tablinks");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
-    
+
             // Show the current tab, and add an "active" class to the button that opened the tab
             document.getElementById(dia).style.display = "block";
-            evt.currentTarget.className += " active";
+            event.currentTarget.className += " active";
         }
     },
-  
+
     mounted: function () {
         this.peticion();
-        document.getElementById("contenidoManana").style.display = "none";
+        document.getElementById("contenidoHoy").style.display = "block";
         //this.mostrar();
         //this.int = setTimeout(this.mostrar, 500);
         //this.rep = setInterval(this.mostrar, 300000);
