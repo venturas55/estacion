@@ -1,6 +1,7 @@
 var app = new Vue({
     el: '#miApp',
     data: {
+        meses: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         listado: [],
         fechas: [],
         nudos: [],
@@ -9,11 +10,15 @@ var app = new Vue({
         actual: [],
         rep: "",
         int: "",
-        //ret: "",
         forecast1: "",
-        fechasPrev: [],
-        nudosPrev: [],
-        rachasPrev: [],
+        forecastToday: "",
+        forecastTomorrow: "",
+        fechasPrevToday: [],
+        nudosPrevToday: [],
+        rachasPrevToday: [],
+        fechasPrevTomorrow: [],
+        nudosPrevTomorrow: [],
+        rachasPrevTomorrow: [],
         localidad: "cullera",
         latitud: "",
         longitud: ""
@@ -55,91 +60,9 @@ var app = new Vue({
             }
 
             //fin de girar las flechas
-            console.log("mostrar");
-            this.consulta();
+            //this.consulta();
 
-            var trace1 = {
-                type: "scatter",
-                mode: "lines",
-                name: 'media',
-                x: this.fechas,
-                y: this.nudos,
-                line: {
-                    color: 'rgba(63, 191, 95, 1)',
-                    width: 3
-                }
-            }
-            var trace2 = {
-                type: "scatter",
-                mode: "lines",
-                name: 'Minima',
-                x: this.fechas,
-                y: this.minima,
-                line: {
-                    color: 'rgba(63, 146, 191, 0.3)',
-                    width: 3
-                }
-            }
-            var trace3 = {
-                type: "scatter",
-                mode: "lines",
-                name: 'Maxima',
-                x: this.fechas,
-                y: this.maxima,
-                line: {
-                    color: 'rgba(191, 63, 63, 0.3)',
-                    width: 3
-                }
-            }
-
-            var trace4 = {
-                type: "scatter",
-                mode: "lines",
-                name: 'Direccion',
-                x: this.fechas,
-                y: [0],
-                line: {
-                    color: 'rgba(148, 103, 189,0.6)',
-                    width: 1
-                },
-                yaxis: 'y2',
-            }
-
-
-            var data = [trace1, trace2, trace3];
-
-            var layout = {
-                title: 'Historico Estación de Cullera',
-                yaxis: {
-                    range: [0, 25],
-                    title: {
-                        text: "Nudos",
-                        standoff: 10
-                    }
-                },
-                yaxis2: {
-                    title: 'Dirección',
-                    range: [0, 360],
-                    titlefont: {
-                        color: 'rgba(148, 103, 189,0.6)'
-                    },
-                    tickfont: {
-                        color: 'rgba(148, 103, 189,0.6)'
-                    },
-                    overlaying: 'y',
-                    side: 'right'
-                },
-                paper_bgcolor: '#f5deb3',
-                plot_bgcolor: '#ffeec3',
-                font: {
-                    size: 18
-                }
-            };
-
-            Plotly.newPlot('myGraph', data, layout, {
-                displayModeBar: false
-            });
-
+            //GAUGE
             var data = [{
                 domain: {
                     x: [0, 1],
@@ -191,7 +114,6 @@ var app = new Vue({
                 },
 
             }];
-
             var layout2 = {
                 width: 600,
                 height: 400,
@@ -201,26 +123,105 @@ var app = new Vue({
             Plotly.newPlot('myGauge', data, layout2);
 
 
+            //GRAFICA HISTORICO VIENTO
+            //Historico nudos
+            var trace1 = {
+                type: "scatter",
+                mode: "lines",
+                name: 'media',
+                x: this.fechas,
+                y: this.nudos,
+                line: {
+                    color: 'rgba(63, 191, 95, 1)',
+                    width: 3
+                }
+            }
+            //Historico nudos minima
+            var trace2 = {
+                type: "scatter",
+                mode: "lines",
+                name: 'Minima',
+                x: this.fechas,
+                y: this.minima,
+                line: {
+                    color: 'rgba(63, 146, 191, 0.3)',
+                    width: 3
+                }
+            }
+            //Historico nudos maxima
+            var trace3 = {
+                type: "scatter",
+                mode: "lines",
+                name: 'Maxima',
+                x: this.fechas,
+                y: this.maxima,
+                line: {
+                    color: 'rgba(191, 63, 63, 0.3)',
+                    width: 3
+                }
+            }
+            //Historico nudos direccion
+            var trace4 = {
+                type: "scatter",
+                mode: "lines",
+                name: 'Direccion',
+                x: this.fechas,
+                y: [0],
+                line: {
+                    color: 'rgba(148, 103, 189,0.6)',
+                    width: 1
+                },
+                yaxis: 'y2',
+            }
+            var data = [trace1, trace2, trace3];
+            var layout = {
+                title: 'Historico Estación de Cullera',
+                yaxis: {
+                    range: [0, 25],
+                    title: {
+                        text: "Nudos",
+                        standoff: 10
+                    }
+                },
+                yaxis2: {
+                    title: 'Dirección',
+                    range: [0, 360],
+                    titlefont: {
+                        color: 'rgba(148, 103, 189,0.6)'
+                    },
+                    tickfont: {
+                        color: 'rgba(148, 103, 189,0.6)'
+                    },
+                    overlaying: 'y',
+                    side: 'right'
+                },
+                paper_bgcolor: '#f5deb3',
+                plot_bgcolor: '#ffeec3',
+                font: {
+                    size: 18
+                }
+            };
+            Plotly.newPlot('myGraph', data, layout, {
+                displayModeBar: false
+            });
 
-            //grafica
-            var trace1b = {
+
+
+            //GRAFICA PREVISION VIENTO hoy 
+            var tracePreviHoy = {
                 type: "scatter",
                 mode: "lines",
                 name: 'Velocidad',
-                x: this.fechasPrev,
-                y: this.nudosPrev,
+                x: this.fechasPrevToday,
+                y: this.nudosPrevToday,
                 line: {
                     color: '#17BECF',
                     width: 3
                 }
             }
-
-
-
-            var datab = [trace1b];
-
-            var layoutb = {
-                title: 'Predicción para ' + this.localidad,
+            var dataHoy = [tracePreviHoy];
+            var layoutPreviHoy = {
+                title: 'Predicción para ' + this.localidad + ' hoy',
                 yaxis: {
                     range: [0, 25],
                     title: {
@@ -235,11 +236,42 @@ var app = new Vue({
                     size: 18
                 }
             };
-
-            Plotly.newPlot('myGraph2', datab, layoutb, {
+            Plotly.newPlot('myGraphHoy', dataHoy, layoutPreviHoy, {
                 displayModeBar: false
             });
 
+            //GRAFICA PREVISION VIENTO manana
+            var tracePreviManana = {
+                type: "scatter",
+                mode: "lines",
+                name: 'Velocidad',
+                x: this.fechasPrevTomorrow,
+                y: this.nudosPrevTomorrow,
+                line: {
+                    color: '#17BECF',
+                    width: 3
+                }
+            }
+            var dataManana = [tracePreviManana];
+            var layoutPreviManana = {
+                title: 'Predicción para ' + this.localidad+ ' mañana',
+                yaxis: {
+                    range: [0, 25],
+                    title: {
+                        text: "Nudos",
+                        standoff: 10
+                    }
+                },
+
+                paper_bgcolor: '#f5deb3',
+                plot_bgcolor: '#ffeec3',
+                font: {
+                    size: 18
+                }
+            };
+            Plotly.newPlot('myGraphManana', dataManana, layoutPreviManana, {
+                displayModeBar: false
+            });
 
         },
         recargar: function () {
@@ -272,27 +304,65 @@ var app = new Vue({
             await this.mostrar();
         },
         prevision: function () {
-            console.log(this.forecast1.hourly);
             var meses = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            var texto = texto + "<tr><th> Fecha</th>" + this.forecast1.hourly.map(item => ("<td> " + new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] + "</td>")).join('') + "</tr>";
-            var texto = texto + "<tr><th> Vel</th>" + this.forecast1.hourly.map(item => ("<td> " + (item.wind_gust * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
-            this.nudosPrev = this.forecast1.hourly.map(function (item) { return item.wind_speed * 1.94384.toFixed(1) });
-            this.rachasPrev = this.forecast1.hourly.map(function (item) { return item.wind_gust * 1.94384.toFixed(1) });
-            this.fechasPrev = this.forecast1.hourly.map(function (item) { return new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] });
-            var texto = texto + "<tr><th> Racha</th>" + this.forecast1.hourly.map(item => ("<td>" + (item.wind_speed * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
-            var texto = texto + "<tr><th> Dir</th>" + this.forecast1.hourly.map((item, i) => ('<td><img src="./img/arrow.png" class="arrow" id="arrowb' + i + '" /></td>')).join('') + "</tr>";
-            var texto = texto + "<tr><th> Nubes</th>" + this.forecast1.hourly.map(item => ("<td>" + (item.clouds + "%</td>"))).join('') + "</tr>";
-            var texto = texto + "<tr><th> Temp</th>" + this.forecast1.hourly.map(item => ("<td>" + (item.temp - 273.15).toFixed(1) + "</td>")).join('') + "</tr>";
-            var texto = texto + "<tr><th> Icon</th>" + this.forecast1.hourly.map(item => ("<td><img src='http://api.openweathermap.org/img/w/" + item.weather[0].icon + ".png' /></td>")).join('') + "</tr>";
-            var tabla = document.getElementById("previ2");
+            this.forecastToday = this.forecast1.hourly.slice(0, 24);
+            this.forecastTomorrow = this.forecast1.hourly.slice(24, 49);
+            console.log(this.forecastToday);
+            console.log(this.forecastTomorrow);
+            this.nudosPrevToday = this.forecastToday.map(function (item) { return item.wind_speed * 1.94384.toFixed(1) });
+            this.rachasPrevToday = this.forecastToday.map(function (item) { return item.wind_gust * 1.94384.toFixed(1) });
+            this.fechasPrevToday = this.forecastToday.map(function (item) { return new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] });
+            this.nudosPrevTomorrow = this.forecastTomorrow.map(function (item) { return item.wind_speed * 1.94384.toFixed(1) });
+            this.rachasPrevTomorrow = this.forecastTomorrow.map(function (item) { return item.wind_gust * 1.94384.toFixed(1) });
+            this.fechasPrevTomorrow = this.forecastTomorrow.map(function (item) { return new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] });
 
-            tabla.innerHTML =  texto;
+            var textoHoy = "<tr><th> Fecha</th>" + this.forecastToday.map(item => ("<td> " + new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] + "</td>")).join('') + "</tr>";
+            textoHoy += "<tr><th> Vel</th>" + this.forecastToday.map(item => ("<td> " + (item.wind_gust * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
+            textoHoy += "<tr><th> Racha</th>" + this.forecastToday.map(item => ("<td>" + (item.wind_speed * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
+            textoHoy += "<tr><th> Dir</th>" + this.forecastToday.map((item, i) => ('<td><img src="./img/arrow.png" class="arrow" id="arrowb' + i + '" /></td>')).join('') + "</tr>";
+            textoHoy += "<tr><th> Nubes</th>" + this.forecastToday.map(item => ("<td>" + (item.clouds + "%</td>"))).join('') + "</tr>";
+            textoHoy += "<tr><th> Temp</th>" + this.forecastToday.map(item => ("<td>" + (item.temp - 273.15).toFixed(1) + "</td>")).join('') + "</tr>";
+            textoHoy += "<tr><th> Icon</th>" + this.forecastToday.map(item => ("<td><img src='http://api.openweathermap.org/img/w/" + item.weather[0].icon + ".png' /></td>")).join('') + "</tr>";
+
+
+            var textoManana = "<tr><th> Fecha</th>" + this.forecastTomorrow.map(item => ("<td> " + new Date(item.dt * 1000).getHours() + "h " + new Date(item.dt * 1000).getDate() + meses[new Date(item.dt * 1000).getMonth()] + "</td>")).join('') + "</tr>";
+            textoManana += "<tr><th> Vel</th>" + this.forecastTomorrow.map(item => ("<td> " + (item.wind_gust * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
+            textoManana += "<tr><th> Racha</th>" + this.forecastTomorrow.map(item => ("<td>" + (item.wind_speed * 1.94384).toFixed(1) + "</td>")).join('') + "</tr>";
+            textoManana += "<tr><th> Dir</th>" + this.forecastTomorrow.map((item, i) => ('<td><img src="./img/arrow.png" class="arrow" id="arrowb' + (i + 24) + '" /></td>')).join('') + "</tr>";
+            textoManana += "<tr><th> Nubes</th>" + this.forecastTomorrow.map(item => ("<td>" + (item.clouds + "%</td>"))).join('') + "</tr>";
+            textoManana += "<tr><th> Temp</th>" + this.forecastTomorrow.map(item => ("<td>" + (item.temp - 273.15).toFixed(1) + "</td>")).join('') + "</tr>";
+            textoManana += "<tr><th> Icon</th>" + this.forecastTomorrow.map(item => ("<td><img src='http://api.openweathermap.org/img/w/" + item.weather[0].icon + ".png' /></td>")).join('') + "</tr>";
+
+            var tablaToday = document.getElementById("tablaHoy");
+            var tablaTomorrow = document.getElementById("tablaManana")
+            tablaToday.innerHTML = textoHoy;
+            tablaTomorrow.innerHTML = textoManana;
+        },
+        openDia: function (evt, dia) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+    
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+    
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+    
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(dia).style.display = "block";
+            evt.currentTarget.className += " active";
         }
-
     },
+  
     mounted: function () {
-
         this.peticion();
+        document.getElementById("contenidoManana").style.display = "none";
         //this.mostrar();
         //this.int = setTimeout(this.mostrar, 500);
         //this.rep = setInterval(this.mostrar, 300000);

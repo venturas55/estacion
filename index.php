@@ -64,14 +64,28 @@
 				<option value="saler">Saler</option>
 				<option value="cullera">Cullera</option>
 			</select>
+			<div class="tab">
+				<button class="tablinks" v-on:click="openDia(event, 'contenidoHoy')">Hoy</button>
+				<button class="tablinks" v-on:click="openDia(event, 'contenidoManana')">Mañana</button>
+			</div>
 
-			<div class="contenido">
-				<div class="grafico" id='myGraph2'>
+			<div class="contenido tabcontent" id="contenidoHoy">
+			<table class="prevision" id="tablaHoy">
+					<caption> Prevision hoy </caption>
+				</table>	
+			<div class="grafico" id='myGraphHoy'>
 				</div>
-				<table class="prevision" id="previ2">
-					<caption> Prevision </caption>
 
-				</table>
+			</div>
+
+
+			<div class="contenido  tabcontent" id="contenidoManana">
+			<table class="prevision" id="tablaManana">
+					<caption> Prevision mañana </caption>
+				</table>	
+			<div class="grafico" id='myGraphManana'>
+				</div>
+		
 			</div>
 
 
